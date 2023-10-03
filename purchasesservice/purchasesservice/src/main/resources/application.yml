@@ -1,0 +1,71 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: PURCHASES-SERVICE
+
+# Database
+
+  data:
+    mongodb:
+      uri: mongodb+srv://sandeepsandyo9o7o1:ro45.200.100@cluster0.fjfmmcp.mongodb.net/ott-share?retryWrites=true&w=majority
+
+#  Configuration server
+
+  config:
+    import: optional:configserver:http://localhost:8085
+
+#  Spring Security authentication
+
+  security:
+    oauth2:
+      client:
+        registration:
+          my-internal-client:
+            provider: okta
+            authorization-grant-type: client_credentials
+            scope: internal
+            client-id: 0oabnsgvyoUYz3E065d7
+            client-secret: Wi1Os2Fa46Smfmk57JuACeJmF_jTieSWhM_hAlYt6rHzViWT6ATvjhLI77Xa6VvR
+        provider:
+          okta:
+            issuer-uri: https://dev-31816752.okta.com/oauth2/default
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-31816752.okta.com/oauth2/default
+          audiences: api://default
+
+# Actuator
+
+management:
+  endpoint:
+    health:
+      show-details: always
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  health:
+    circuitbreakers:
+      enabled: true
+
+#      Circuit breaker
+resilience4j:
+  circuitbreaker:
+    instances:
+      SUBSCRIPTION_BREAKER:
+        register-health-indicator: true
+        event-consumer-buffer-size: 10
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 10
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 60000
+        permitted-number-of-calls-in-half-open-state: 10
+        sliding-window-size: 100
+        sliding-window-type: COUNT_BASED
+okta:
+  oauth2:
+    issuer: https://dev-31816752.okta.com/oauth2/default
+    audience: api://default

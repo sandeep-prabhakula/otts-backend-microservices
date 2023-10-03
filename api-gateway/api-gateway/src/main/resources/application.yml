@@ -1,0 +1,36 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+              - Path= /users/**
+
+        - id: SUBSCRIPTION-SERVICE
+          uri: lb://SUBSCRIPTION-SERVICE
+          predicates:
+              - Path= /subscriptions/**
+
+
+        - id: PURCHASES-SERVICE
+          uri: lb://PURCHASES-SERVICE
+          predicates:
+            - Path= /purchases/**
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+okta:
+  oauth2:
+    issuer: https://dev-31816752.okta.com/oauth2/default
+    audience: api://default
+    client-id: 0oabnsgvyoUYz3E065d7
+    client-secret: Wi1Os2Fa46Smfmk57JuACeJmF_jTieSWhM_hAlYt6rHzViWT6ATvjhLI77Xa6VvR
+    scopes: openid,profile, email,offline_access

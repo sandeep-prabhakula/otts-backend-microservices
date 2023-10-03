@@ -1,0 +1,15 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: SUBSCRIPTION-SERVICE
+
+  data:
+    mongodb:
+      uri: mongodb+srv://sandeepsandyo9o7o1:ro45.200.100@cluster0.fjfmmcp.mongodb.net/ott-share?retryWrites=true&w=majority
+  config:
+    import: optional:configserver:http://localhost:8085
+okta:
+  oauth2:
+    audience: api://default
+    issuer: https://dev-31816752.okta.com/oauth2/default
