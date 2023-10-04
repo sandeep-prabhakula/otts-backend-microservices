@@ -37,8 +37,14 @@ public class UserServiceImpl implements UserService {
         return currentUser;
     }
 
+//    @Override
+//    public List<Users> getAllUsers() {
+//        return userRepository.findAll();
+//    }
+
     @Override
-    public List<Users> getAllUsers() {
-        return userRepository.findAll();
+    public Users findUserByEmail(String email) {
+        Users currentUser = userRepository.findByEmail(email).orElseThrow(() -> new RecordNotFoundException("User Not Found"));
+        return currentUser;
     }
 }

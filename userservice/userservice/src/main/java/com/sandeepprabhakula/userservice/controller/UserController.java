@@ -23,11 +23,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
     }
 
-    @GetMapping
-    @PreAuthorize("hasAuthorities('Admin')")
-    public ResponseEntity<List<Users>> getAllUsers(){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
-    }
+//    @GetMapping
+//    @PreAuthorize("hasRole('SCOPE_Admin')")
+//    public ResponseEntity<List<Users>> getAllUsers(){
+//        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+//    }
 
     @CircuitBreaker(name = "SUBSCRIPTION_PURCHASES_BREAKER", fallbackMethod = "subscriptionPurchasesFallback")
     @GetMapping("/{uid}")
@@ -44,5 +44,10 @@ public class UserController {
                 .build();
         return new ResponseEntity<>(user,HttpStatus.INTERNAL_SERVER_ERROR);
 
+    }
+
+    @GetMapping("/find-by-email")
+    public Users findUserByEmail(@RequestParam("email") String email){
+        return userService.findUserByEmail(email);
     }
 }
